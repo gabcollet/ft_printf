@@ -1,0 +1,16 @@
+Modele des formats:
+https://www.ibisc.univ-evry.fr/~petit/Enseignement/Modelisation-en-C/printf-conversions-format.pdf
+
+Man printf(3) en détail:
+https://en.cppreference.com/w/c/io/fprintf
+
+Man stdarg(3):
+https://linux.die.net/man/3/stdarg
+
+Man printf(3):
+https://linux.die.net/man/3/printf
+
+Write your own printf
+http://www.firmcodes.com/write-printf-function-c/
+
+
