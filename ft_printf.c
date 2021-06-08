@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 12:05:56 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/08 14:33:01 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/08 16:23:00 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ char *ft_convert(unsigned int num, int base, int maj)
 int ft_printf(const char *format, ...)
 {
 	unsigned int i;
-	char *s;
 	int ret;
 
 	ret = 0;
 	va_list ap;
+	va_list ap2;
 	va_start(ap, format); //Read strings and argument
 	while (*format != '\0')
 	{
@@ -73,6 +73,9 @@ int ft_printf(const char *format, ...)
 			break;
 		format++; //Move to next character
 
+		va_copy(ap2, ap);
+		
+
 //Identify format specifier
 //Take argument
 //Do calculation according to the format specifier
@@ -80,21 +83,7 @@ int ft_printf(const char *format, ...)
 //Print string
 		
 		if(*format == 'c')
-		{
-			i = va_arg(ap, int);
-			ret = ft_putchar(i, ret);
-		}
-		else if(*format == 's')
-		{
-			s = va_arg(ap, char *);
-			ret = ft_putstr(s, ret);
-		}
-		else if(*format == 'p')
-		{
-			i = va_arg(ap, unsigned int);
-			ret = ft_putstr("0x10", ret);
-			ret = ft_putstr(ft_convert(i, 16, 0), ret);
-		}
+			ret = ft_putchar(va_arg(ap, int), ret);
 		else if(*format == 'd' || *format == 'i')
 		{
 			i = va_arg(ap, int);
@@ -102,29 +91,24 @@ int ft_printf(const char *format, ...)
 			{
 				i = -i;
 				ret = ft_putchar('-', ret);
-
 			}
 			ret = ft_putstr(ft_convert(i, 10, 0), ret);
 		}
+		else if(*format == 's')
+			ret = ft_putstr(va_arg(ap, char *), ret);
+		else if(*format == 'p')
+		{
+			ret = ft_putstr("0x10", ret);
+			ret = ft_putstr(ft_convert(va_arg(ap, unsigned int), 16, 0), ret);
+		}
 		else if(*format == 'u')
-		{
-			i = va_arg(ap, unsigned int);
-			ret = ft_putstr(ft_convert(i, 10, 0), ret);
-		}
+			ret = ft_putstr(ft_convert(va_arg(ap, unsigned int), 10, 0), ret);
 		else if(*format == 'x')
-		{
-			i = va_arg(ap, unsigned int);
-			ret = ft_putstr(ft_convert(i, 16, 0), ret);
-		}
+			ret = ft_putstr(ft_convert(va_arg(ap, unsigned int), 16, 0), ret);
 		else if(*format == 'X')
-		{
-			i = va_arg(ap, unsigned int);
-			ret = ft_putstr(ft_convert(i, 16, 1), ret);
-		}
+			ret = ft_putstr(ft_convert(va_arg(ap, unsigned int), 16, 1), ret);
 		else if(*format == '%')
-		{
 			ret = ft_putchar('%', ret);
-		}
 		format++;
 	}
 	va_end(ap);
@@ -134,9 +118,9 @@ int ft_printf(const char *format, ...)
 int main()
 {
 	int ret = 0;
-	ret = ft_printf("", 2147483647);
+	ret = ft_printf("%-10s%10s%10s", "debut", "millieu", "fin");
 	printf("\n============================================================\n");
-	printf("", 2147483647);
-	printf("\n%d", ret);
+	printf("%-10s%10s%10s", "debut", "millieu", "fin");
+	printf("\n%d\n", ret);
 	return 0;
 }
