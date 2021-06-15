@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 12:05:56 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/10 17:28:26 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/15 17:56:15 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,30 +50,56 @@ char *ft_convert(unsigned int num, int base, int maj)
 	return(ptr);
 }
 
+int is_a_conversion_specifier(const char *format)
+{
+	if (*format == 'c' || *format == 's' || *format == 'p' || 
+		*format == 'd' || *format == 'i' || *format == 'u' || 
+		*format == 'x' || *format == 'X' || *format == '%')
+		return (1);
+	return(0);
+}
+
 t_flags	ft_check(const char *format, t_flags flags)
 {	
-	if (*format == '-')
+	while (!(is_a_conversion_specifier(format)))
 	{
-		flags.minus = 1;
-		format++;
-	}
-	if (*format == '0')
-	{
-		if (flags.minus != 1)
-			flags.zero = 1;
-		format++;
-	}
-	if (*format >= '0' && *format <= '9')
-	{
-		flags.width = ft_atoi(format);
-		while (*format >= '0' && *format <= '9')
+		if (*format == '-')
+		{
+			flags.minus = 1;
+			if (flags.zero == 1)
+				flags.zero = 0;
 			format++;
+		}
+		if (*format == '0')
+		{
+			flags.zero = 1;
+			format++;
+		}
+		if (*format == '*')
+		{
+			flags.w_asterisk = 1;
+			format++;
+		}
+		if (*format >= '0' && *format <= '9')
+		{
+			flags.width = ft_atoi(format);
+			while (*format >= '0' && *format <= '9')
+				format++;
+		}
+		if (*format == '.')
+		{
+			format++;
+			if (*format == '*')
+			{
+				flags.p_asterisk = 1;
+				format++;
+			}
+			flags.precision = ft_atoi(format);
+			if (!(is_a_conversion_specifier(format)))
+				format++;
+		}
 	}
-	if (*format == '.')
-	{
-		format++;
-		flags.precision = ft_atoi(format);
-	}
+	format++;
 	return(flags);
 }
 
@@ -83,6 +109,8 @@ t_flags	ft_initialize_flag(t_flags flags)
 	flags.precision = -1;
 	flags.zero = 0;
 	flags.width = 0;
+	flags.w_asterisk = 0;
+	flags.p_asterisk = 0;
 	return(flags);
 }
 
@@ -106,66 +134,67 @@ int ft_print_dori(int i, int ret, t_flags flags)
 	int temp;
 	
 	temp = i;
+	digit = 0;
+	if (i == 0)
+		digit++;
 	while(temp != 0)
 	{
 		temp = temp/10;
 		digit++;
 	}
-	if (i > 0)
-		digit--;
 	if (flags.minus == 1)
 	{
-		digit++;
 		if (i < 0)
 		{
+			digit++;
 			i = -i;
 			ret = ft_putchar('-', ret);
 		}
-		ret = ft_putstr(ft_convert(i, 10, 0), ret);
 	}
-	if (i < 0 && flags.zero == 1)
+	if ((flags.minus == 0) && (flags.precision != -1)) 
+	{
+		while (((flags.width - 1) > flags.precision) && (flags.width > digit))
+		{
+			flags.width--;
+			if ((flags.zero == 1) && (flags.width <= flags.precision))
+				ret = ft_putchar('0', ret);
+			else
+				ret = ft_putchar(' ', ret);
+		}
+	}
+	if ((i < 0 && flags.zero == 1) || (i < 0 && flags.minus == 0))
 	{
 		i = -i;
 		ret = ft_putchar('-', ret);
+		flags.width--;
 	}
-	//inséré une fonction pour la precision ici qui met des 0 avant le putchar
-	//selon la taille et qui met des espaces avant la taille précisé.
-	//Ensuite validé que ca ne scrap pas la while qui suit.
+	if (flags.precision == 0)
+		return (ret);
+
+	while (flags.precision > digit)
+	{
+		flags.precision--;
+		flags.width--;
+		ret = ft_putchar('0', ret);
+	}
+	if ((flags.minus == 1) ||(flags.precision != -1))
+		ret = ft_putstr(ft_convert(i, 10, 0), ret);
 	while (flags.width > digit)
 	{
 		flags.width--;
 		if (flags.zero == 1)
-		{
 			ret = ft_putchar('0', ret);
-		}
 		else if (flags.zero == 0)
 			ret = ft_putchar(' ', ret);
 	}
-	if (flags.minus == 0)
-	{
-		if (i < 0 && flags.zero == 0)
-		{
-			i = -i;
-			ret = ft_putchar('-', ret);
-		}
+	if ((flags.minus == 0) && (flags.precision == -1))
 		ret = ft_putstr(ft_convert(i, 10, 0), ret);
-	}
 	return(ret);
-}
-
-int is_a_conversion_specifier(const char *format)
-{
-	if (*format == 'c' || *format == 's' || *format == 'p' || 
-		*format == 'd' || *format == 'i' || *format == 'u' || 
-		*format == 'x' || *format == 'X' || *format == '%')
-		return (1);
-	return(0);
 }
 
 int ft_printf(const char *format, ...)
 {
 	t_flags flags;
-	unsigned int i;
 	int ret;
 
 	ret = 0;
@@ -183,6 +212,24 @@ int ft_printf(const char *format, ...)
 		format++; //Move to next character
 		flags = ft_initialize_flag(flags); //Clear flags
 		flags = ft_check(format, flags); //Check for flags, width and precision
+		if (flags.w_asterisk == 1)
+		{
+			flags.width = va_arg(ap, int);
+				if (flags.width < 0)
+				{
+					flags.width = -flags.width;
+					flags.minus = 1;
+				}
+		}
+		if (flags.p_asterisk == 1)
+		{
+			flags.precision = va_arg(ap, int);
+				if (flags.width < 0)
+				{
+					flags.width = -flags.width;
+					flags.minus = 1;
+				}
+		}
 		while (!(is_a_conversion_specifier(format))) //Move to the specifier
 			format++;
 //Identify format specifier
@@ -217,20 +264,14 @@ int ft_printf(const char *format, ...)
 	return(ret);
 }
 
-int main()
+/* int main()
 {
 	int ret = 0;
 	int retp = 0;
-	ret = ft_printf("%-10.6d\n", -4242);
-	ret = ft_printf("%-10.6d\n", 4242);
-	ret = ft_printf("%010.6d\n", -4242);
-	ret = ft_printf("%010.6d", 4242);
+	ret = ft_printf(" 0*%0-*d*0 0*%0*d*0 ", 21, 1021, 21, -1011);
 	printf("\n============================================================\n");
-	retp = printf("%-10.6d\n", -4242);
-	retp = printf("%-10.6d\n", 4242);
-	retp = printf("%010.6d\n", -4242);
-	retp = printf("%010.6d", 4242);
+	retp = printf(" 0*%0-*d*0 0*%0*d*0 ", 21, 1021, 21, -1011);
 	printf("\n#char imprimé ft_printf: %d\n", ret);
 	printf("#char imprimé printf: %d\n", retp);
 	return 0;
-}
+} */
