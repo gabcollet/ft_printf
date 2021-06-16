@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 12:05:56 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/15 17:56:15 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/16 18:01:07 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_flags	ft_check(const char *format, t_flags flags)
 				flags.zero = 0;
 			format++;
 		}
-		if (*format == '0')
+		if (*format == '0' && flags.minus == 0)
 		{
 			flags.zero = 1;
 			format++;
@@ -149,17 +149,17 @@ int ft_print_dori(int i, int ret, t_flags flags)
 			digit++;
 			i = -i;
 			ret = ft_putchar('-', ret);
+			flags.precision++;
 		}
 	}
 	if ((flags.minus == 0) && (flags.precision != -1)) 
 	{
-		while (((flags.width - 1) > flags.precision) && (flags.width > digit))
+		if (i < 0)
+			flags.width--;
+		while ((flags.width > flags.precision) && (flags.width > digit))
 		{
 			flags.width--;
-			if ((flags.zero == 1) && (flags.width <= flags.precision))
-				ret = ft_putchar('0', ret);
-			else
-				ret = ft_putchar(' ', ret);
+			ret = ft_putchar(' ', ret);
 		}
 	}
 	if ((i < 0 && flags.zero == 1) || (i < 0 && flags.minus == 0))
@@ -168,28 +168,88 @@ int ft_print_dori(int i, int ret, t_flags flags)
 		ret = ft_putchar('-', ret);
 		flags.width--;
 	}
-	if (flags.precision == 0)
+	if ((flags.precision == 0) && (i == 0))
+	{
+		while (--flags.width + 1 > 0)
+			ret = ft_putchar(' ', ret);
 		return (ret);
-
+	}
 	while (flags.precision > digit)
 	{
 		flags.precision--;
 		flags.width--;
 		ret = ft_putchar('0', ret);
 	}
-	if ((flags.minus == 1) ||(flags.precision != -1))
+	if ((flags.minus == 1) || (flags.precision != -1))
 		ret = ft_putstr(ft_convert(i, 10, 0), ret);
 	while (flags.width > digit)
 	{
 		flags.width--;
-		if (flags.zero == 1)
+		if ((flags.minus == 0) && (flags.precision == -1) && (flags.zero == 1))
 			ret = ft_putchar('0', ret);
-		else if (flags.zero == 0)
+		else
 			ret = ft_putchar(' ', ret);
 	}
 	if ((flags.minus == 0) && (flags.precision == -1))
 		ret = ft_putstr(ft_convert(i, 10, 0), ret);
 	return(ret);
+}
+
+int ft_print_s(char *ptr, int ret, t_flags flags)
+{
+	int len;
+	int temp;
+
+	temp = flags.precision;
+
+	len = ft_strlen(ptr);
+	
+	if ((flags.width > 0) && (flags.minus == 0))
+	{
+		if (flags.precision == 0)
+			len = 0;
+			//Le bout dans la while en dessous en commentaire, fait planté tout les autres
+			//test mais fait fonctioner le dernier (33). Voir pk??
+		while (/* (--flags.width + 1 > flags.precision) || */ (--flags.width + 1 > len))
+			ret = ft_putchar(' ', ret);
+		if (flags.precision == -1)
+			ret = ft_putstr(ptr, ret);
+		if (flags.precision > 0)
+		{
+			while (flags.precision > 0 && ptr[0])
+			{
+				ret = ft_putchar(ptr[0], ret);
+				ptr++;
+				flags.precision--;
+			}
+		}		
+	}
+	else
+	{
+		while ((++temp) < len && (flags.precision > 0))
+		{
+			if ((flags.width != 0) && (flags.minus != 1))
+				ret = ft_putchar(' ', ret);
+		}
+		if (flags.precision > 0)
+		{
+			while (flags.precision > 0 && ptr[0])
+			{
+				ret = ft_putchar(ptr[0], ret);
+				ptr++;
+				flags.precision--;
+				flags.width--;
+			}
+		}
+		else if (flags.precision != 0)
+		{
+			ret = ft_putstr(ptr, ret);
+			flags.width -= len;
+		}
+		while (--flags.width + 1 > 0)
+			ret = ft_putchar(' ', ret);
+	}
+	return (ret);
 }
 
 int ft_printf(const char *format, ...)
@@ -242,7 +302,7 @@ int ft_printf(const char *format, ...)
 		else if(*format == 'd' || *format == 'i')
 			ret = ft_print_dori(va_arg(ap, int), ret, flags);
 		else if(*format == 's')
-			ret = ft_putstr(va_arg(ap, char *), ret);
+			ret = ft_print_s(va_arg(ap, char *), ret, flags);
 		else if(*format == 'p')
 		{
 			ret = ft_putstr("0x10", ret);
@@ -268,9 +328,9 @@ int ft_printf(const char *format, ...)
 {
 	int ret = 0;
 	int retp = 0;
-	ret = ft_printf(" 0*%0-*d*0 0*%0*d*0 ", 21, 1021, 21, -1011);
+	ret = ft_printf(" %4.2s %-4.2s ", "123", "4567");
 	printf("\n============================================================\n");
-	retp = printf(" 0*%0-*d*0 0*%0*d*0 ", 21, 1021, 21, -1011);
+	retp = printf(" %4.2s %-4.2s ", "123", "4567");
 	printf("\n#char imprimé ft_printf: %d\n", ret);
 	printf("#char imprimé printf: %d\n", retp);
 	return 0;

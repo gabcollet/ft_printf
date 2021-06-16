@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 10:11:25 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/15 17:56:17 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/16 17:58:56 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 # include "libft/libft.h"
 
 /* # include "libft/ft_atoi.c"
-# include "libft/ft_strlcpy.c" */
+# include "libft/ft_strlcpy.c"
+# include "libft/ft_strlen.c"
+#include <limits.h> */
 
 typedef struct s_flags
 {
@@ -40,5 +42,6 @@ t_flags	ft_check(const char *format, t_flags flags);
 char *ft_convert(unsigned int num, int base, int maj);
 int	ft_putstr(char *s, int ret);
 int	ft_putchar(char c, int ret);
+int ft_print_s(char *ptr, int ret, t_flags flags);
 
 #endif
