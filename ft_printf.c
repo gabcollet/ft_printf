@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 12:05:56 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/16 18:01:07 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/17 15:39:05 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_putstr(char *s, int ret)
 	return(ret);
 }
 
-char *ft_convert(unsigned int num, int base, int maj)
+char *ft_convert(unsigned long num, int base, int maj)
 {
 	static char	val[] = "0123456789abcdef";
 	static char buffer[50];
@@ -128,9 +128,8 @@ int ft_print_c(char c, int ret, t_flags flags)
 	return(ret);
 }
 
-int ft_print_dori(int i, int ret, t_flags flags)
+int ft_digit(int digit, int i)
 {
-	int digit;
 	int temp;
 	
 	temp = i;
@@ -142,6 +141,15 @@ int ft_print_dori(int i, int ret, t_flags flags)
 		temp = temp/10;
 		digit++;
 	}
+	return (digit);
+}
+
+int ft_print_dori(int i, int ret, t_flags flags)
+{
+	int digit;
+
+	digit = 0;
+	digit = ft_digit(digit, i);
 	if (flags.minus == 1)
 	{
 		if (i < 0)
@@ -201,17 +209,23 @@ int ft_print_s(char *ptr, int ret, t_flags flags)
 	int temp;
 
 	temp = flags.precision;
-
 	len = ft_strlen(ptr);
-	
+	if (ptr == NULL)
+		ptr = "(null)";
 	if ((flags.width > 0) && (flags.minus == 0))
 	{
 		if (flags.precision == 0)
 			len = 0;
-			//Le bout dans la while en dessous en commentaire, fait planté tout les autres
-			//test mais fait fonctioner le dernier (33). Voir pk??
-		while (/* (--flags.width + 1 > flags.precision) || */ (--flags.width + 1 > len))
-			ret = ft_putchar(' ', ret);
+		while (flags.width > len)
+		{
+			while ((flags.width > flags.precision) && (flags.precision != -1))
+			{
+				ret = ft_putchar(' ', ret);
+				flags.width--;
+			}
+			if (--flags.width + 1 > len)
+				ret = ft_putchar(' ', ret);
+		}
 		if (flags.precision == -1)
 			ret = ft_putstr(ptr, ret);
 		if (flags.precision > 0)
@@ -250,6 +264,72 @@ int ft_print_s(char *ptr, int ret, t_flags flags)
 			ret = ft_putchar(' ', ret);
 	}
 	return (ret);
+}
+
+int ft_print_p(char *ptr, int ret, t_flags flags)
+{
+	int len;
+
+	len = (ft_strlen(ptr) + 2);
+	if ((flags.width > 0) && (flags.minus == 0))
+	{
+		while (--flags.width + 1 > len)
+			ret = ft_putchar(' ', ret);
+		ret = ft_putstr("0x", ret);
+		ret = ft_putstr(ptr, ret);
+	}
+	else
+	{
+		ret = ft_putstr("0x", ret);
+		ret = ft_putstr(ptr, ret);
+		flags.width -= len;
+		while (--flags.width + 1 > 0)
+			ret = ft_putchar(' ', ret);
+	}
+	return (ret);
+}
+
+int ft_print_x(char *ptr, int ret, t_flags flags)
+{
+	int len;
+
+	len = (ft_strlen(ptr));
+	if ((flags.minus == 0) && (flags.precision != -1)) 
+	{
+		while ((flags.width > flags.precision) && (flags.width > len))
+		{
+			flags.width--;
+			ret = ft_putchar(' ', ret);
+		}
+	}
+	if (flags.precision == 0)
+	{
+		while (--flags.width + 1 > 0)
+			ret = ft_putchar(' ', ret);
+		return (ret);
+	}
+	while (flags.precision > len)
+	{
+		flags.precision--;
+		flags.width--;
+		ret = ft_putchar('0', ret);
+	}
+	if ((flags.minus == 1) || (flags.precision != -1))
+	{
+		/* while (--flags.precision + 1 > 0) */
+			ret = ft_putstr(ptr, ret);
+	}
+	while (flags.width > len)
+	{
+		flags.width--;
+		if ((flags.minus == 0) && (flags.precision == -1) && (flags.zero == 1))
+			ret = ft_putchar('0', ret);
+		else
+			ret = ft_putchar(' ', ret);
+	}
+	if ((flags.minus == 0) && (flags.precision == -1))
+		ret = ft_putstr(ptr, ret);
+	return(ret);
 }
 
 int ft_printf(const char *format, ...)
@@ -304,16 +384,13 @@ int ft_printf(const char *format, ...)
 		else if(*format == 's')
 			ret = ft_print_s(va_arg(ap, char *), ret, flags);
 		else if(*format == 'p')
-		{
-			ret = ft_putstr("0x10", ret);
-			ret = ft_putstr(ft_convert(va_arg(ap, unsigned int), 16, 0), ret);
-		}
+			ret = ft_print_p(ft_convert(va_arg(ap, unsigned long), 16, 0), ret, flags);
 		else if(*format == 'u')
-			ret = ft_putstr(ft_convert(va_arg(ap, unsigned int), 10, 0), ret);
+			ret = ft_putstr(ft_convert(va_arg(ap, unsigned long), 10, 0), ret);
 		else if(*format == 'x')
-			ret = ft_putstr(ft_convert(va_arg(ap, unsigned int), 16, 0), ret);
+			ret = ft_print_x(ft_convert(va_arg(ap, unsigned long), 16, 0), ret, flags);
 		else if(*format == 'X')
-			ret = ft_putstr(ft_convert(va_arg(ap, unsigned int), 16, 1), ret);
+			ret = ft_print_x(ft_convert(va_arg(ap, unsigned long), 16, 1), ret, flags);
 		else if(*format == '%')
 			ret = ft_putchar('%', ret);
 		else
@@ -324,14 +401,14 @@ int ft_printf(const char *format, ...)
 	return(ret);
 }
 
-/* int main()
+int main()
 {
 	int ret = 0;
 	int retp = 0;
-	ret = ft_printf(" %4.2s %-4.2s ", "123", "4567");
+	ret = ft_printf(" 0*%0-*.*x*0 0*%0*.*x*0 ", 2, 6, 102, 21, 10, -101);
 	printf("\n============================================================\n");
-	retp = printf(" %4.2s %-4.2s ", "123", "4567");
+	retp = printf(" 0*%0-*.*x*0 0*%0*.*x*0 ", 2, 6, 102, 21, 10, -101);
 	printf("\n#char imprimé ft_printf: %d\n", ret);
 	printf("#char imprimé printf: %d\n", retp);
 	return 0;
-} */
+}
