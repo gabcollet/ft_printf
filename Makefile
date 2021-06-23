@@ -6,15 +6,14 @@
 #    By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/11 12:58:26 by gcollet           #+#    #+#              #
-#    Updated: 2021/06/15 12:14:12 by gcollet          ###   ########.fr        #
+#    Updated: 2021/06/23 10:41:01 by gcollet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-LIBFT = ./libft/libft.a
 NAME 	= libftprintf.a
-SRCS 	= ft_printf.c
+SRCS 	= srcs/ft_atoi.c srcs/ft_strlcpy.c srcs/ft_strlen.c srcs/ft_printf.c
 OBJS 	= ${SRCS:.c=.o}
-HEADER	= libft.h
+HEADER	= includes/ft_printf.h
 
 CC 		= gcc
 CFLAGS 	= -Wall -Wextra -Werror
@@ -23,8 +22,6 @@ CFLAGS 	= -Wall -Wextra -Werror
 					${CC} ${CFLAGS} -I ${HEADER} -c $< -o $(<:.c=.o)
 
 $(NAME):	${OBJS}
-					$(MAKE) bonus -C ./libft
-					cp libft/libft.a $(NAME)
 					ar rc ${NAME} ${OBJS}
 
 all: 		${NAME}
