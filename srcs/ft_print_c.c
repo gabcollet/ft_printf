@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 11:07:00 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/25 11:07:10 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/25 16:57:36 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ int	ft_print_c(char c, t_s s)
 	while (s.width > 1)
 	{
 		s.width--;
-		s.ret = ft_putchar(' ', s.ret);
+		if (s.zero == 1)
+			s.ret = ft_putchar('0', s.ret);
+		else	
+			s.ret = ft_putchar(' ', s.ret);
 	}
 	if (s.minus == 0)
 		s.ret = ft_putchar(c, s.ret);

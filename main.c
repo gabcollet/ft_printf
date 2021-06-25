@@ -6,31 +6,31 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/23 10:19:07 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/23 16:13:53 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/25 17:16:41 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/ft_printf.h"
 #include <limits.h>
 
-#include "../srcs/ft_atoi.c"
+/* #include "../srcs/ft_atoi.c"
 #include "../srcs/ft_strlcpy.c"
-#include "../srcs/ft_strlen.c"
+#include "../srcs/ft_strlen.c" */
 
-/* int main()
+int main()
 {
 	int ret = 0;
 	int retp = 0;
 	
-	ret = ft_printf("%-8.12s, %3s, %8s, %---2s, %.*s, %.0s, %.1s, %.2s, %.4s, %.8s", NULL, NULL, NULL, NULL, -2, NULL, NULL, NULL, NULL, NULL, NULL);
+	ret = ft_printf("%% *.5i 42 == |% *.5i|", 4, 42);
 	printf("\n============================================================\n");
-	retp = printf("%-8.12s, %3s, %8s, %---2s, %.*s, %.0s, %.1s, %.2s, %.4s, %.8s", NULL, NULL, NULL, NULL, -2, NULL, NULL, NULL, NULL, NULL, NULL);
+	retp = printf("%% *.5i 42 == |% *.5i|", 4, 42);
 	printf("\n#char imprimé ft_printf: %d\n", ret);
 	printf("#char imprimé printf: %d\n", retp);
 	return 0;
-} */
+}
 
-int main()
+/* int main()
 {
 	int		a = -4;
 	int		b = 0;
@@ -55,4 +55,4 @@ int main()
 	char	*u = "-0";
 
 	ft_printf("%u, %x, %X, %u, %x, %X, %u, %x, %X, %u, %x, %X, %u, %x, %X, %u, %x, %X, %u, %x, %X, %u, %x, %X", i, i, i, j, j, j, k, k, k, l, l, l, m, m, m, c, c, c, d, d, d, e, e, e);
-}
+} */

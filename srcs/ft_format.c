@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 12:04:44 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/25 12:11:05 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/25 16:48:48 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_s	ft_format(va_list ap, t_s s)
 	else if (*s.format == 'X')
 		s.ret = ft_print_uint(ft_convert(va_arg(ap, unsigned int), 16, 1), s);
 	else if (*s.format == '%')
-		s.ret = ft_putchar('%', s.ret);
+		s.ret = ft_print_c('%', s);
 	else
 	{
 		s.len = -1;
