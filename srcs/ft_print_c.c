@@ -1,39 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_print_c.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/07 12:05:56 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/25 12:18:25 by gcollet          ###   ########.fr       */
+/*   Created: 2021/06/25 11:07:00 by gcollet           #+#    #+#             */
+/*   Updated: 2021/06/25 11:07:10 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-int	ft_printf(const char *format, ...)
+int	ft_print_c(char c, t_s s)
 {
-	va_list	ap;
-	t_s		s;
-
-	s.ret = 0;
-	s.format = format;
-	va_start(ap, format);
-	while (*s.format != '\0')
+	if (s.minus == 1)
+		s.ret = ft_putchar(c, s.ret);
+	while (s.width > 1)
 	{
-		s = ft_print_text(s);
-		if (*s.format == '\0')
-			break ;
-		s.format++;
-		s = ft_initialize_flag(s);
-		s = ft_check(s);
-		s = ft_asterisk(ap, s);
-		s = ft_format(ap, s);
-		if (s.len == -1)
-			return (s.ret);
-		s.format++;
+		s.width--;
+		s.ret = ft_putchar(' ', s.ret);
 	}
-	va_end(ap);
+	if (s.minus == 0)
+		s.ret = ft_putchar(c, s.ret);
 	return (s.ret);
 }

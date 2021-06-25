@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 10:11:25 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/25 10:45:25 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/25 12:11:16 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_s		ft_check(t_s s);
 t_s		ft_check2(t_s s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 size_t	ft_strlen(const char *s);
-char	*convert(unsigned long num, int base, int maj);
+char	*ft_convert(unsigned long num, int base, int maj);
 int		ft_putstr(char *s, int ret);
 int		ft_putchar(char c, int ret);
 int		ft_printf(const char *format, ...);
@@ -58,10 +58,10 @@ int		ft_print_c(char c, t_s s);
 int		ft_print_s(char *ptr, t_s s);
 t_s		ft_print_s1(t_s s);
 t_s		ft_print_s2(t_s s);
-int		ft_p(char *ptr, t_s s);
+int		ft_print_p(char *ptr, t_s s);
 int		ft_digit(int i);
-int		ft_uint(char *ptr, t_s s);
-t_s		ft_uint1(t_s s);
+int		ft_print_uint(char *ptr, t_s s);
+t_s		ft_print_uint1(t_s s);
 int		ft_atoi(const char *nptr);
 
 #endif

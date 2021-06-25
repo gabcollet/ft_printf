@@ -1,39 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_convert.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/07 12:05:56 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/25 12:18:25 by gcollet          ###   ########.fr       */
+/*   Created: 2021/06/25 12:18:09 by gcollet           #+#    #+#             */
+/*   Updated: 2021/06/25 12:18:29 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-int	ft_printf(const char *format, ...)
+char	*ft_convert(unsigned long num, int base, int maj)
 {
-	va_list	ap;
-	t_s		s;
+	static char	val[17];
+	static char	buffer[50];
+	char		*ptr;
 
-	s.ret = 0;
-	s.format = format;
-	va_start(ap, format);
-	while (*s.format != '\0')
+	ft_strlcpy(val, "0123456789abcdef", 17);
+	if (maj == 1)
+		ft_strlcpy(val, "0123456789ABCDEF", 17);
+	ptr = &buffer[49];
+	*ptr = '\0';
+	*--ptr = val[num % base];
+	num /= base;
+	while (num != 0)
 	{
-		s = ft_print_text(s);
-		if (*s.format == '\0')
-			break ;
-		s.format++;
-		s = ft_initialize_flag(s);
-		s = ft_check(s);
-		s = ft_asterisk(ap, s);
-		s = ft_format(ap, s);
-		if (s.len == -1)
-			return (s.ret);
-		s.format++;
+		*--ptr = val[num % base];
+		num /= base;
 	}
-	va_end(ap);
-	return (s.ret);
+	return (ptr);
 }

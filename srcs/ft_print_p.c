@@ -1,39 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_print_p.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/07 12:05:56 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/25 12:18:25 by gcollet          ###   ########.fr       */
+/*   Created: 2021/06/25 12:00:13 by gcollet           #+#    #+#             */
+/*   Updated: 2021/06/25 12:02:53 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-int	ft_printf(const char *format, ...)
+int	ft_print_p(char *ptr, t_s s)
 {
-	va_list	ap;
-	t_s		s;
+	int	len;
 
-	s.ret = 0;
-	s.format = format;
-	va_start(ap, format);
-	while (*s.format != '\0')
+	len = (ft_strlen(ptr) + 2);
+	if ((s.width > 0) && (s.minus == 0))
 	{
-		s = ft_print_text(s);
-		if (*s.format == '\0')
-			break ;
-		s.format++;
-		s = ft_initialize_flag(s);
-		s = ft_check(s);
-		s = ft_asterisk(ap, s);
-		s = ft_format(ap, s);
-		if (s.len == -1)
-			return (s.ret);
-		s.format++;
+		while (--s.width + 1 > len)
+			s.ret = ft_putchar(' ', s.ret);
+		s.ret = ft_putstr("0x", s.ret);
+		s.ret = ft_putstr(ptr, s.ret);
 	}
-	va_end(ap);
+	else
+	{
+		s.ret = ft_putstr("0x", s.ret);
+		s.ret = ft_putstr(ptr, s.ret);
+		s.width -= len;
+		while (--s.width + 1 > 0)
+			s.ret = ft_putchar(' ', s.ret);
+	}
 	return (s.ret);
 }
