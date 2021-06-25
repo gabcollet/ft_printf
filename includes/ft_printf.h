@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 10:11:25 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/23 16:13:51 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/25 10:45:25 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		ft_putchar(char c, int ret);
 int		ft_printf(const char *format, ...);
 t_s		ft_print_text(t_s s);
 t_s		ft_format(va_list ap, t_s s);
-t_s		ft_astrerisk(va_list ap, t_s s);
+t_s		ft_asterisk(va_list ap, t_s s);
 int		is_a_conversion_specifier(t_s s);
 int		ft_print_dori(long i, t_s s);
 t_s		ft_print_dori1(t_s s);

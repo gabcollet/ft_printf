@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 12:05:56 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/23 16:10:40 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/25 10:45:32 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -464,7 +464,7 @@ t_s	ft_format(va_list ap, t_s s)
 	return (s);
 }
 
-t_s	ft_astrerisk(va_list ap, t_s s)
+t_s	ft_asterisk(va_list ap, t_s s)
 {
 	if (s.w_asterisk == 1)
 	{
@@ -510,7 +510,7 @@ int	ft_printf(const char *format, ...)
 		s.format++;
 		s = ft_initialize_flag(s);
 		s = ft_check(s);
-		s = ft_astrerisk(ap, s);
+		s = ft_asterisk(ap, s);
 		s = ft_format(ap, s);
 		if (s.len == -1)
 			return (s.ret);
