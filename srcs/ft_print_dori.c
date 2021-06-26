@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 10:58:09 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/25 12:11:35 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/26 16:07:51 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,24 @@ t_s	ft_print_dori1(t_s s)
 {
 	if ((s.minus == 1) || ((s.i < 0) && (s.zero == 1)
 			&& (s.precision == -1)))
+		s = ft_negative(s);
+	if ((s.minus == 0) && (s.precision != 0))
 	{
-		if (s.i < 0)
+		if ((s.i < 0) || (s.plus == 1) || (s.space == 1))
+			s.width--;
+		while ((s.width > s.precision) && (s.width > s.digit))
 		{
-			s.i = -s.i;
-			s.ret = ft_putchar('-', s.ret);
+			if ((s.zero == 1) && (s.precision >= s.width))
+				s.ret = ft_putchar('0', s.ret);
+			if ((s.plus != 1) && (s.space != 1))
+			{
+				if ((s.zero == 1) && (s.precision == -1))
+					s.ret = ft_putchar('0', s.ret);
+				else
+					s.ret = ft_putchar(' ', s.ret);
+			}
+			else
+				s.ret = ft_putchar(' ', s.ret);
 			s.width--;
 		}
 	}
@@ -29,44 +42,11 @@ t_s	ft_print_dori1(t_s s)
 
 t_s	ft_print_dori2(t_s s)
 {
-	if ((s.minus == 0) && (s.precision != 0))
-	{
-		if (s.i < 0)
-			s.width--;
-		while ((s.width > s.precision) && (s.width > s.digit))
-		{
-			if ((s.zero == 1) && (s.precision >= s.width))
-				s.ret = ft_putchar('0', s.ret);
-			else if ((s.zero == 1) && (s.precision == -1))
-				s.ret = ft_putchar('0', s.ret);
-			else
-				s.ret = ft_putchar(' ', s.ret);
-			s.width--;
-		}
-	}
 	if ((s.i < 0 && s.zero == 1) || (s.i < 0 && s.minus == 0))
 	{
 		s.width--;
 		if (s.width <= s.digit)
-		{
-			s.i = -s.i;
-			s.ret = ft_putchar('-', s.ret);
-		}
-	}
-	return (s);
-}
-
-t_s	ft_print_dori3_1(t_s s)
-{
-	if (s.minus == 0)
-	{
-		if (s.i < 0)
-		{
-			s.i = -s.i;
-			s.ret = ft_putchar('-', s.ret);
-			s.width--;
-		}
-		s.ret = ft_putstr(ft_convert(s.i, 10, 0), s.ret);
+			s = ft_negative(s);
 	}
 	return (s);
 }
@@ -83,10 +63,15 @@ t_s	ft_print_dori3(t_s s)
 		{
 			while (--s.width + 1 >= 0)
 				s.ret = ft_putchar(' ', s.ret);
+			s = ft_negative(s);
 			s.digit = -1;
 			return (s);
 		}
-		s = ft_print_dori3_1(s);
+		if (s.minus == 0)
+		{
+			s = ft_negative(s);
+			s.ret = ft_putstr(ft_convert(s.i, 10, 0), s.ret);
+		}
 		s.digit = -1;
 		return (s);
 	}

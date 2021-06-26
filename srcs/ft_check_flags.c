@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_check.c                                         :+:      :+:    :+:   */
+/*   ft_check_flags.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 11:04:10 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/25 17:23:03 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/26 19:12:18 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	is_a_conversion_specifier(t_s s)
 {
 	if (*s.format == 'c' || *s.format == 's' || *s.format == 'p'
 		|| *s.format == 'd' || *s.format == 'i' || *s.format == 'u'
-		|| *s.format == 'x' || *s.format == 'X' || *s.format == '%')
+		|| *s.format == 'x' || *s.format == 'X' || *s.format == '%'
+		|| *s.format == 'n')
 		return (1);
 	return (0);
 }
@@ -80,12 +81,14 @@ t_s	ft_check(t_s s)
 				s.zero = 0;
 			s.format++;
 		}
+		s = ft_check_bonus(s);
 		if (*s.format == '0' && s.minus == 0)
 		{
 			s.zero = 1;
 			s.format++;
 		}
 		s = ft_check2(s);
+		s = ft_check_length(s);
 	}
 	return (s);
 }
@@ -98,5 +101,10 @@ t_s	ft_initialize_flag(t_s s)
 	s.width = 0;
 	s.w_asterisk = 0;
 	s.p_asterisk = 0;
+	s.plus = 0;
+	s.space = 0;
+	s.len = 0;
+	s.temp = 0;
+	s.digit = 0;
 	return (s);
 }

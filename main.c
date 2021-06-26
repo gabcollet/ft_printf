@@ -22,9 +22,9 @@ int main()
 	int ret = 0;
 	int retp = 0;
 	
-	ret = ft_printf("%% *.5i 42 == |% *.5i|", 4, 42);
+	ret = ft_printf(" %lc ", u'ƀ');
 	printf("\n============================================================\n");
-	retp = printf("%% *.5i 42 == |% *.5i|", 4, 42);
+	retp = printf(" %lc ", u'ƀ');
 	printf("\n#char imprimé ft_printf: %d\n", ret);
 	printf("#char imprimé printf: %d\n", retp);
 	return 0;

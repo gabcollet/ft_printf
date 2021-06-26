@@ -6,22 +6,14 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 12:03:18 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/25 12:04:14 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/26 16:10:43 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-t_s	ft_print_uint1(t_s s)
+t_s	ft_print_uint2(t_s s)
 {
-	if ((s.minus == 0) && (s.precision != -1))
-	{
-		while ((s.width > s.precision) && (s.width > s.len))
-		{
-			s.width--;
-			s.ret = ft_putchar(' ', s.ret);
-		}
-	}
 	if (s.precision == 0)
 	{
 		if (*s.ptr != '0')
@@ -34,6 +26,28 @@ t_s	ft_print_uint1(t_s s)
 		s.len = -1;
 		return (s);
 	}
+	return (s);
+}
+
+t_s	ft_print_uint1(t_s s)
+{
+	if ((s.sharp == 1) && (*s.ptr != '0'))
+	{
+		if (*s.format == 'x')
+			s.ret = ft_putstr("0x", s.ret);
+		if (*s.format == 'X')
+			s.ret = ft_putstr("0X", s.ret);
+		s.width -= 2;
+	}
+	if ((s.minus == 0) && (s.precision != -1))
+	{
+		while ((s.width > s.precision) && (s.width > s.len))
+		{
+			s.width--;
+			s.ret = ft_putchar(' ', s.ret);
+		}
+	}
+	s = ft_print_uint2(s);
 	return (s);
 }
 

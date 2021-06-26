@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 11:02:11 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/25 12:11:54 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/26 18:54:06 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,38 @@ int	ft_digit(int i)
 	return (digit);
 }
 
+t_s	ft_negative(t_s s)
+{	
+	if ((s.i < 0) && (s.len == 0))
+	{
+		s.i = -s.i;
+		if (s.i == LONG_MIN)
+			s.len = 1;
+		s.ret = ft_putchar('-', s.ret);
+		s.width--;
+		s.plus--;
+		s.space--;
+	}
+	else if (s.plus == 1)
+	{
+		s.ret = ft_putchar('+', s.ret);
+		s.plus--;
+		s.width--;
+	}
+	else if (s.space == 1)
+	{
+		s.ret = ft_putchar(' ', s.ret);
+		s.space--;
+		s.width--;
+	}
+	return (s);
+}
+
 t_s	ft_print_dori4(t_s s)
 {
+	s = ft_negative(s);
 	while (s.precision > s.digit)
 	{
-		if (s.i < 0)
-		{
-			s.i = -s.i;
-			s.ret = ft_putchar('-', s.ret);
-			s.width--;
-		}
 		s.precision--;
 		s.width--;
 		s.ret = ft_putchar('0', s.ret);
@@ -55,11 +77,7 @@ t_s	ft_print_dori5(t_s s)
 		s.width--;
 		if ((s.minus == 0) && (s.precision == -1) && (s.zero == 1))
 		{
-			if (s.i < 0)
-			{
-				s.i = -s.i;
-				s.ret = ft_putchar('-', s.ret);
-			}
+			s = ft_negative(s);
 			s.ret = ft_putchar('0', s.ret);
 		}
 		else
@@ -67,11 +85,7 @@ t_s	ft_print_dori5(t_s s)
 	}
 	if ((s.minus == 0) && (s.precision == -1))
 	{
-		if (s.i < 0)
-		{
-			s.i = -s.i;
-			s.ret = ft_putchar('-', s.ret);
-		}
+		s = ft_negative(s);
 		s.ret = ft_putstr(ft_convert(s.i, 10, 0), s.ret);
 	}
 	return (s);

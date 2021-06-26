@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 12:04:44 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/25 16:48:48 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/26 19:05:06 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,36 @@ t_s	ft_format(va_list ap, t_s s)
 		s.ret = ft_print_uint(ft_convert(va_arg(ap, unsigned int), 16, 1), s);
 	else if (*s.format == '%')
 		s.ret = ft_print_c('%', s);
+	else if (*s.format == 'n')
+		*va_arg(ap, int *) = s.ret;
+	else
+	{
+		s.len = -1;
+		return (s);
+	}
+	return (s);
+}
+
+t_s	ft_format_l(va_list ap, t_s s)
+{
+	if (*s.format == 'c')
+		s.ret = ft_print_c(va_arg(ap, wint_t), s);
+	else if (*s.format == 'd' || *s.format == 'i')
+		s.ret = ft_print_dori(va_arg(ap, long), s);
+	else if (*s.format == 's')
+		s.ret = ft_print_s(va_arg(ap, char *), s); /* à modifier pour un wchar_t * */
+	else if (*s.format == 'p')
+		s.ret = ft_print_p(ft_convert(va_arg(ap, unsigned long), 16, 0), s);
+	else if (*s.format == 'u')
+		s.ret = ft_print_uint(ft_convert(va_arg(ap, unsigned long), 10, 0), s);
+	else if (*s.format == 'x')
+		s.ret = ft_print_uint(ft_convert(va_arg(ap, unsigned long), 16, 0), s);
+	else if (*s.format == 'X')
+		s.ret = ft_print_uint(ft_convert(va_arg(ap, unsigned long), 16, 1), s);
+	else if (*s.format == '%')
+		s.ret = ft_print_c('%', s);
+	else if (*s.format == 'n')
+		*va_arg(ap, long *) = s.ret;
 	else
 	{
 		s.len = -1;

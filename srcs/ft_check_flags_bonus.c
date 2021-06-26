@@ -1,42 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_check_flags_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/07 12:05:56 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/26 17:34:53 by gcollet          ###   ########.fr       */
+/*   Created: 2021/06/26 11:53:15 by gcollet           #+#    #+#             */
+/*   Updated: 2021/06/26 19:12:27 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-int	ft_printf(const char *format, ...)
+t_s	ft_check_bonus(t_s s)
 {
-	va_list	ap;
-	t_s		s;
-
-	s.ret = 0;
-	s.format = format;
-	va_start(ap, format);
-	while (*s.format != '\0')
+	if (*s.format == '+')
 	{
-		s = ft_print_text(s);
-		if (*s.format == '\0')
-			break ;
-		s.format++;
-		s = ft_initialize_flag(s);
-		s = ft_check(s);
-		s = ft_asterisk(ap, s);
-		if (s.l == 1)
-			s = ft_format_l(ap, s);
-		else	
-			s = ft_format(ap, s);
-		if (s.len == -1)
-			return (s.ret);
+		s.plus = 1;
 		s.format++;
 	}
-	va_end(ap);
-	return (s.ret);
+	if (*s.format == ' ')
+	{
+		s.space = 1;
+		s.format++;
+	}
+	if (*s.format == '#')
+	{
+		s.sharp = 1;
+		s.format++;
+	}
+	return (s);
+}
+
+t_s ft_check_length(t_s s)
+{
+	if (*s.format == 'l')
+	{
+		s.l = 1;
+		s.format++;
+	}
+	return (s);
 }
