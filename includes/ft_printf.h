@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 10:11:25 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/26 18:50:54 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/29 16:16:33 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,11 @@ typedef struct s_s
 	int			sharp;
 	long long	i;
 	char		*ptr;
+	wchar_t		*wptr;
 	int			l;
+	int			ll;
+	int			h;
+	int			hh;
 }		t_s;
 
 t_s		ft_initialize_flag(t_s s);
@@ -65,6 +69,7 @@ t_s		ft_print_dori5(t_s s);
 t_s		ft_negative(t_s s);
 int		ft_digit(int i);
 int		ft_print_c(char c, t_s s);
+int		ft_print_wc(wint_t c, t_s s);
 int		ft_print_s(char *ptr, t_s s);
 t_s		ft_print_s1(t_s s);
 t_s		ft_print_s2(t_s s);
@@ -73,5 +78,18 @@ int		ft_print_uint(char *ptr, t_s s);
 t_s		ft_print_uint1(t_s s);
 t_s		ft_print_uint2(t_s s);
 int		ft_atoi(const char *nptr);
+unsigned int	get_header(wint_t c);
+unsigned int	get_mask(wint_t c);
+int	get_shift(wint_t c);
+size_t	ft_wchar_size(wint_t c);
+int	ft_putwchar(wint_t c, int ret);
+int	ft_print_ws(wchar_t *wptr, t_s s);
+t_s	ft_print_ws2(t_s s);
+t_s	ft_print_ws1(t_s s);
+int	ft_putwstr(wchar_t *s, int ret);
+size_t	ft_wstrlen(const wchar_t *s);
+t_s	ft_format_ll(va_list ap, t_s s);
+t_s	ft_format_h(va_list ap, t_s s);
+t_s	ft_format_hh(va_list ap, t_s s);
 
 #endif

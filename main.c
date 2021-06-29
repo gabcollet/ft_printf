@@ -6,12 +6,13 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/23 10:19:07 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/25 17:16:41 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/29 12:40:22 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/ft_printf.h"
 #include <limits.h>
+#include <locale.h>
 
 /* #include "../srcs/ft_atoi.c"
 #include "../srcs/ft_strlcpy.c"
@@ -22,9 +23,10 @@ int main()
 	int ret = 0;
 	int retp = 0;
 	
-	ret = ft_printf(" %lc ", u'ƀ');
+	//setlocale(LC_ALL, "en_US.UTF-8");
+	ret = ft_printf(" %hs ", "asd");
 	printf("\n============================================================\n");
-	retp = printf(" %lc ", u'ƀ');
+	retp = printf(" %hs ", "asd");
 	printf("\n#char imprimé ft_printf: %d\n", ret);
 	printf("#char imprimé printf: %d\n", retp);
 	return 0;

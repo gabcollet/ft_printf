@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 11:53:15 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/26 19:12:27 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/29 15:34:20 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,25 @@ t_s ft_check_length(t_s s)
 {
 	if (*s.format == 'l')
 	{
-		s.l = 1;
 		s.format++;
+		if (*s.format == 'l')
+		{
+			s.ll = 1;
+			s.format++;
+		}
+		else
+			s.l = 1;
+	}
+	if (*s.format == 'h')
+	{
+		s.format++;
+		if (*s.format == 'h')
+		{
+			s.hh = 1;
+			s.format++;
+		}
+		else
+			s.h = 1;
 	}
 	return (s);
 }

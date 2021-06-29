@@ -1,41 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_print_wc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/06 14:39:40 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/29 14:55:21 by gcollet          ###   ########.fr       */
+/*   Created: 2021/06/29 11:14:18 by gcollet           #+#    #+#             */
+/*   Updated: 2021/06/29 11:44:41 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* La fonction strlen() calcule la longueur de la chaîne de caractères s, sans 
-compter l'octet nul « \0 » final. */
-/* La fonction strlen() renvoie le nombre de caractères dans la chaîne s. */
-
 #include "../includes/ft_printf.h"
 
-size_t	ft_strlen(const char *s)
+int	ft_print_wc(wint_t c, t_s s)
 {
-	size_t			i;
-
-	i = 0;
-	if (s == NULL)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
-}
-
-size_t	ft_wstrlen(const wchar_t *s)
-{
-	size_t			i;
-
-	i = 0;
-	if (s == NULL)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
+	if (s.minus == 1)
+		s.ret = ft_putwchar(c, s.ret);
+	while (s.width > 1)
+	{
+		s.width--;
+		if (s.zero == 1)
+			s.ret = ft_putwchar('0', s.ret);
+		else
+			s.ret = ft_putwchar(' ', s.ret);
+	}
+	if (s.minus == 0)
+		s.ret = ft_putwchar(c, s.ret);
+	return (s.ret);
 }

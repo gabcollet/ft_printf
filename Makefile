@@ -6,7 +6,7 @@
 #    By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/11 12:58:26 by gcollet           #+#    #+#              #
-#    Updated: 2021/06/26 16:15:00 by gcollet          ###   ########.fr        #
+#    Updated: 2021/06/29 15:47:02 by gcollet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,11 +16,12 @@ SRCS 	= srcs/ft_atoi.c srcs/ft_strlcpy.c srcs/ft_strlen.c srcs/ft_printf.c\
 		srcs/ft_print_dori.c srcs/ft_print_dori1.c srcs/ft_print_p.c\
 		srcs/ft_print_s.c srcs/ft_print_text.c srcs/ft_print_uint.c\
 		srcs/ft_putchar.c srcs/ft_putstr.c srcs/ft_print_c.c\
-		srcs/ft_check_flags_bonus.c
+		srcs/ft_check_flags_bonus.c srcs/ft_print_wc.c srcs/ft_putwchar.c\
+		srcs/ft_print_ws.c
 OBJS 	= ${SRCS:.c=.o}
 SRCS_B	= 
 OBJS_B	= ${SRCS_B:.c=.o}
-HEADER	= includes/ft_printf.h
+HEADER	= includes/
 
 CC 		= gcc
 CFLAGS 	= -Wall -Wextra -Werror

@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 11:04:10 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/26 19:12:18 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/29 15:32:14 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,9 @@ t_s	ft_initialize_flag(t_s s)
 	s.len = 0;
 	s.temp = 0;
 	s.digit = 0;
+	s.l = 0;
+	s.ll = 0;
+	s.h = 0;
+	s.hh = 0;
 	return (s);
 }
