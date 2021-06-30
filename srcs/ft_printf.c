@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 12:05:56 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/29 16:16:53 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/06/30 10:13:18 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,7 @@ int	ft_printf(const char *format, ...)
 		s = ft_initialize_flag(s);
 		s = ft_check(s);
 		s = ft_asterisk(ap, s);
-		if (s.l == 1)
-			s = ft_format_l(ap, s);
-		else if (s.ll == 1)
-			s = ft_format_ll(ap, s);
-		else if (s.h == 1)
-			s = ft_format_h(ap, s);
-		else if (s.hh == 1)
-			s = ft_format_hh(ap, s);
-		else	
-			s = ft_format(ap, s);
+		s = ft_length_format(ap, s);
 		if (s.len == -1)
 			return (s.ret);
 		s.format++;
