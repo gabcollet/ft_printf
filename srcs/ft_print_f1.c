@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 10:47:41 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/30 16:47:08 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/07/01 18:15:10 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,26 @@
 
 t_s	ft_digit_f(t_s s)
 {
-	double	f;
-	long long temp;
+	double		f;
+	long long	temp;
 
 	s.digit = 0;
 	f = s.d;
 	temp = s.d;
-	while(f != ((int)f))
+	while (f != ((int)f))
 	{
 		s.fdigit++;
 		f *= 10;
-        if (s.fdigit > 7)
-        {
-            s.fdigit = 6;
-            break ;
-        }
+		if (s.fdigit > 17)
+			break ;
 	}
-	if (s.d == 0)
+	if (s.d < 1 && s.d > -1)
 		s.digit++;
 	while (temp != 0)
 	{
 		temp = temp / 10;
 		s.digit++;
 	}
-	if (s.fdigit < 6)
-		s.fdigit = 6;
 	return (s);
 }
 
@@ -72,16 +67,9 @@ t_s	ft_fnegative(t_s s)
 t_s	ft_print_f4(t_s s)
 {
 	s = ft_fnegative(s);
-/* 	while (s.precision > s.digit)
-	{
-		s.precision--;
-		s.width--;
-		s.ret = ft_putchar('0', s.ret);
-	} */
 	if ((s.minus == 1) || (s.precision != -1))
 	{
-        s.fdigit = s.precision;
-		s.ptr = ft_ftoa(s.d, s.fdigit, s);
+		s = ft_ftoa(s.d, s);
 		s.ret = ft_putstr(s.ptr, s.ret);
 		free (s.ptr);
 	}
@@ -90,6 +78,11 @@ t_s	ft_print_f4(t_s s)
 
 t_s	ft_print_f5(t_s s)
 {
+	if ((s.fdigit < 6) && (s.precision == -1))
+	{
+		s.temp = s.fdigit;
+		s.fdigit = 6;
+	}
 	while (s.width > (s.digit + s.fdigit + 1))
 	{
 		s.width--;
@@ -104,9 +97,10 @@ t_s	ft_print_f5(t_s s)
 	if ((s.minus == 0) && (s.precision == -1))
 	{
 		s = ft_fnegative(s);
-		s.ptr = ft_ftoa(s.d, s.fdigit, s);
+		s = ft_ftoa(s.d, s);
 		s.ret = ft_putstr(s.ptr, s.ret);
 		free (s.ptr);
 	}
+	s.fdigit = s.temp;
 	return (s);
 }

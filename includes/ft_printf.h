@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 10:11:25 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/30 14:37:00 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/07/01 18:15:35 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,14 +96,14 @@ t_s				ft_format_ll(va_list ap, t_s s);
 t_s				ft_format_h(va_list ap, t_s s);
 t_s				ft_format_hh(va_list ap, t_s s);
 t_s				ft_length_format(va_list ap, t_s s);
-int	ft_print_f(double d, t_s s);
-t_s	ft_print_f1(t_s s);
-t_s	ft_print_f2(t_s s);
-t_s	ft_print_f3(t_s s);
-t_s	ft_print_f5(t_s s);
-t_s	ft_print_f4(t_s s);
-t_s	ft_digit_f(t_s s);
-char	*ft_ftoa(double n, int fdigit, t_s s);
-t_s	ft_fnegative(t_s s);
+int				ft_print_f(double d, t_s s);
+t_s				ft_print_f1(t_s s);
+t_s				ft_print_f3(t_s s);
+t_s				ft_print_f5(t_s s);
+t_s				ft_print_f4(t_s s);
+t_s				ft_digit_f(t_s s);
+t_s				ft_ftoa(double n, t_s s);
+t_s				ft_fnegative(t_s s);
+int				ft_alt_rev_intToStr(long x, char str[], int d);
 
 #endif
