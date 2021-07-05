@@ -6,7 +6,7 @@
 #    By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/11 12:58:26 by gcollet           #+#    #+#              #
-#    Updated: 2021/06/30 12:40:42 by gcollet          ###   ########.fr        #
+#    Updated: 2021/07/05 15:36:17 by gcollet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ SRCS 	= srcs/ft_atoi.c srcs/ft_strlcpy.c srcs/ft_strlen.c srcs/ft_printf.c\
 		srcs/ft_print_s.c srcs/ft_print_text.c srcs/ft_print_uint.c\
 		srcs/ft_putchar.c srcs/ft_putstr.c srcs/ft_print_c.c\
 		srcs/ft_check_flags_bonus.c srcs/ft_print_wc.c srcs/ft_putwchar.c\
-		srcs/ft_print_ws.c srcs/ft_print_f.c srcs/ft_print_f1.c srcs/ft_ftoa.c
+		srcs/ft_print_ws.c srcs/ft_print_f.c srcs/ft_print_f1.c srcs/ft_ftoa.c\
+		srcs/ft_itoa.c srcs/ft_print_e.c srcs/ft_print_e1.c
 OBJS 	= ${SRCS:.c=.o}
 SRCS_B	= 
 OBJS_B	= ${SRCS_B:.c=.o}

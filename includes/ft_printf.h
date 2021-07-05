@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 10:11:25 by gcollet           #+#    #+#             */
-/*   Updated: 2021/07/01 18:15:35 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/07/05 15:40:19 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_s
 	int			ll;
 	int			h;
 	int			hh;
+	int			e;
 }		t_s;
 
 t_s				ft_initialize_flag(t_s s);
@@ -104,6 +105,12 @@ t_s				ft_print_f4(t_s s);
 t_s				ft_digit_f(t_s s);
 t_s				ft_ftoa(double n, t_s s);
 t_s				ft_fnegative(t_s s);
-int				ft_alt_rev_intToStr(long x, char str[], int d);
+t_s				ft_ftoa_e(double n, t_s s);
+char			*ft_itoa(int n);
+int				ft_print_e(double d, t_s s);
+t_s	ft_print_e1(t_s s);
+t_s	ft_print_e3(t_s s);
+t_s	ft_print_e4(t_s s);
+t_s	ft_print_e5(t_s s);
 
 #endif

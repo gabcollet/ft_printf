@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 12:20:36 by gcollet           #+#    #+#             */
-/*   Updated: 2021/07/01 18:13:41 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/07/05 18:34:47 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ void	reverse(char *str, int len)
 	}
 }
 
-int	ft_intToStr(long x, char str[], int d)
+int	ft_intToStr(long x, char str[], int d, int a)
 {
 	int	i;
 
 	i = 0;
-	if (x == 0)
+	if (x == 0 && a == 0)
 		str[i++] = '0';
 	if (x == LLONG_MIN)
 	{
@@ -48,32 +48,12 @@ int	ft_intToStr(long x, char str[], int d)
 		str[i++] = (x % 10) + '0';
 		x = x / 10;
 	}
+	if (a == 1)
+		reverse(str, i);
 	while (i < d)
 		str[i++] = '0';
-	reverse(str, i);
-	str[i] = '\0';
-	return (i);
-}
-
-int	ft_alt_rev_intToStr(long x, char str[], int d)
-{
-	int	i;
-
-	i = 0;
-	if (x == LLONG_MIN)
-	{
-		x = x / 10;
-		x = -x;
-		str[i++] = '8';
-	}
-	while (x)
-	{
-		str[i++] = (x % 10) + '0';
-		x = x / 10;
-	}
-	reverse(str, i);
-	while (i < d)
-		str[i++] = '0';
+	if (a == 0)
+		reverse(str, i);
 	str[i] = '\0';
 	return (i);
 }
@@ -93,6 +73,122 @@ double	ft_round_up(int fdigit, double n)
 	return (ll);
 }
 
+t_s ft_print_ex(t_s s)
+{
+	char	*c;
+	
+	s.ret = ft_putchar('e', s.ret);
+	if (s.temp >= 0)
+		s.ret = ft_putchar('+', s.ret);
+	else
+		s.ret = ft_putchar('-', s.ret);
+	if (s.temp < 10 && s.temp > -10)
+		s.ret = ft_putchar('0', s.ret);
+	c = ft_itoa(s.temp);
+	s.ret = ft_putstr(c, s.ret);
+	free (c);
+	return (s);
+}
+
+long ft_rev(unsigned long long fpart, int precision)
+{
+	int		remainder;
+	long		temp;
+
+	if (precision == -1)
+		precision = 6;
+	remainder = 0;
+	temp = 0;
+	while ((fpart != 0) && (precision != 0))
+	{
+		remainder = (long long)fpart % 10;
+		temp = temp * 10 + remainder;
+		fpart /= 10;
+		precision--;
+	}
+	return (temp);
+}
+
+t_s	ft_ftoa_e(double n, t_s s)
+{
+	unsigned long long	ipart;
+	unsigned long long	fpart;
+	int		i;
+	long long		temp;
+
+	temp = s.fdigit;
+	i = 0;
+	fpart = 0;
+	s.ptr = (char *)malloc(sizeof(char) * (3 + DBL_MANT_DIG - DBL_MIN_EXP));
+	if (s.precision == 0)
+	{
+		n = (n + .5) * 10;
+		n /= 10;
+		ipart = (long)n;
+		if (((ipart / 2) * 2 != ipart) && (s.fdigit < 2) && (ipart != 1))
+			ipart -= 1;
+		s.fdigit = 0;
+	}
+	else
+		ipart = (unsigned long long)n;
+/* 	fpart = n - ipart; */
+	while (s.digit > 1)
+	{
+		fpart *= 10;
+		fpart += (ipart % 10);
+		ipart /= 10;
+		s.digit--;
+		s.temp++;
+        temp--;
+	}
+	fpart = ft_rev(fpart, s.precision);
+	if ((s.precision == -1) || ((s.fdigit < 6) && (s.precision != 0)))
+		s.fdigit = 6;
+	i = ft_intToStr(ipart, s.ptr, 0, 0);
+	if (s.sharp == 1)
+	{
+		s.ptr[i] = '.';
+		s.width--;
+	}
+	if (s.fdigit != 0)
+	{
+		s.ptr[i] = '.';
+		if (fpart == ULLONG_MAX)
+			fpart = 0;
+		if (s.precision != -1)
+			s.fdigit = s.precision;
+		if ((fpart != 0) && (s.precision != -1))
+		{
+			if (s.fdigit > 1)
+				fpart = ft_round_up(s.fdigit - 1, fpart);
+		}
+		else
+		{
+			if (temp > 6)
+				temp = 6;
+			while (temp != 0)
+			{
+				fpart *= 10;
+				temp--;
+				if ((int)fpart == 0)
+				{
+					i += ft_intToStr(0, s.ptr + i + 1, 0, 0);
+					s.fdigit--;
+				}
+			}
+			ft_intToStr((long)fpart, s.ptr + i + 1, s.fdigit, 1);
+			s.ret = ft_putstr(s.ptr, s.ret);
+			s = ft_print_ex(s);
+			return (s);
+		}
+		if (s.fdigit != 0)
+			ft_intToStr((long)fpart, s.ptr + i + 1, s.fdigit, 0);
+	}
+	s.ret = ft_putstr(s.ptr, s.ret);
+	s = ft_print_ex(s);
+	return (s);
+}
+
 t_s	ft_ftoa(double n, t_s s)
 {
 	long	ipart;
@@ -102,13 +198,18 @@ t_s	ft_ftoa(double n, t_s s)
 
 	temp = s.fdigit;
 	i = 0;
+	if (s.e == 1)
+	{
+		s = ft_ftoa_e(n, s);
+		return (s);
+	}
 	s.ptr = (char *)malloc(sizeof(char) * (3 + DBL_MANT_DIG - DBL_MIN_EXP));
 	if (s.precision == 0)
 	{
 		n = (n + .5) * 10;
 		n /= 10;
 		ipart = (long)n;
-		if (((ipart / 2) * 2 != ipart) && (s.fdigit < 2))
+		if (((ipart / 2) * 2 != ipart) && (s.fdigit < 2) && (ipart != 1))
 			ipart -= 1;
 		s.fdigit = 0;
 	}
@@ -117,7 +218,12 @@ t_s	ft_ftoa(double n, t_s s)
 	fpart = n - ipart;
 	if ((s.precision == -1) || ((s.fdigit < 6) && (s.precision != 0)))
 		s.fdigit = 6;
-	i = ft_intToStr(ipart, s.ptr, 0);
+	i = ft_intToStr(ipart, s.ptr, 0, 0);
+	if (s.sharp == 1)
+	{
+		s.ptr[i] = '.';
+		s.width--;
+	}
 	if (s.fdigit != 0)
 	{
 		s.ptr[i] = '.';
@@ -137,15 +243,17 @@ t_s	ft_ftoa(double n, t_s s)
 				temp--;
 				if ((int)fpart == 0)
 				{
-					i += ft_intToStr(0, s.ptr + i + 1, 0);
+					i += ft_intToStr(0, s.ptr + i + 1, 0, 0);
 					s.fdigit--;
 				}
 			}
-			ft_alt_rev_intToStr((long)fpart, s.ptr + i + 1, s.fdigit);
+			ft_intToStr((long)fpart, s.ptr + i + 1, s.fdigit, 1);
+			s.ret = ft_putstr(s.ptr, s.ret);
 			return (s);
 		}
 		if (s.fdigit != 0)
-			ft_intToStr((long)fpart, s.ptr + i + 1, s.fdigit);
+			ft_intToStr((long)fpart, s.ptr + i + 1, s.fdigit, 0);
 	}
+	s.ret = ft_putstr(s.ptr, s.ret);
 	return (s);
 }

@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 11:04:10 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/30 12:55:10 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/07/05 11:03:55 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	is_a_conversion_specifier(t_s s)
 	if (*s.format == 'c' || *s.format == 's' || *s.format == 'p'
 		|| *s.format == 'd' || *s.format == 'i' || *s.format == 'u'
 		|| *s.format == 'x' || *s.format == 'X' || *s.format == '%'
-		|| *s.format == 'n' || *s.format == 'f')
+		|| *s.format == 'n' || *s.format == 'f' || *s.format == 'e')
 		return (1);
 	return (0);
 }
@@ -111,5 +111,7 @@ t_s	ft_initialize_flag(t_s s)
 	s.ll = 0;
 	s.h = 0;
 	s.hh = 0;
+	s.sharp = 0;
+	s.e = 0;
 	return (s);
 }

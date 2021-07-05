@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 12:04:44 by gcollet           #+#    #+#             */
-/*   Updated: 2021/07/01 10:49:48 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/07/05 15:47:30 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ t_s	ft_format(va_list ap, t_s s)
 		*va_arg(ap, int *) = s.ret;
 	else if (*s.format == 'f')
 		s.ret = ft_print_f(va_arg(ap, double), s);
+	else if (*s.format == 'e')
+	{
+		s.e = 1;
+		s.ret = ft_print_e(va_arg(ap, double), s);
+	}
 	else
 	{
 		s.len = -1;
