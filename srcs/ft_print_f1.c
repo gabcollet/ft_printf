@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 10:47:41 by gcollet           #+#    #+#             */
-/*   Updated: 2021/07/05 17:11:50 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/07/06 14:26:00 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,21 +69,21 @@ t_s	ft_print_f4(t_s s)
 	s = ft_fnegative(s);
 	if ((s.minus == 1) || (s.precision != -1))
 	{
-		s = ft_ftoa(s.d, s);
+		s = ft_ftoa(s);
 		free (s.ptr);
+	}
+	if ((s.fdigit < 6) && (s.precision == -1))
+	{
+		s.temp = s.fdigit;
+		s.fdigit = 6;
 	}
 	return (s);
 }
 
 t_s	ft_print_f5(t_s s)
 {
-	int temp;
-	
-	if ((s.fdigit < 6) && (s.precision == -1))
-	{
-		s.temp = s.fdigit;
-		s.fdigit = 6;
-	}
+	int	temp;
+
 	temp = s.digit;
 	while (s.width > (s.digit + s.fdigit + 1))
 	{
@@ -100,7 +100,7 @@ t_s	ft_print_f5(t_s s)
 	if ((s.minus == 0) && (s.precision == -1))
 	{
 		s = ft_fnegative(s);
-		s = ft_ftoa(s.d, s);
+		s = ft_ftoa(s);
 		free (s.ptr);
 	}
 	s.fdigit = s.temp;

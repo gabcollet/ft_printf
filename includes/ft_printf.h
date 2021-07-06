@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 10:11:25 by gcollet           #+#    #+#             */
-/*   Updated: 2021/07/05 15:40:19 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/07/06 14:27:59 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ typedef struct s_s
 	int			ll;
 	int			h;
 	int			hh;
-	int			e;
+	long		ipart;
+	double		fpart;
+	int			y;
 }		t_s;
 
 t_s				ft_initialize_flag(t_s s);
@@ -99,18 +101,13 @@ t_s				ft_format_hh(va_list ap, t_s s);
 t_s				ft_length_format(va_list ap, t_s s);
 int				ft_print_f(double d, t_s s);
 t_s				ft_print_f1(t_s s);
+t_s				ft_print_f2(t_s s);
 t_s				ft_print_f3(t_s s);
 t_s				ft_print_f5(t_s s);
 t_s				ft_print_f4(t_s s);
 t_s				ft_digit_f(t_s s);
-t_s				ft_ftoa(double n, t_s s);
+t_s				ft_ftoa(t_s s);
 t_s				ft_fnegative(t_s s);
-t_s				ft_ftoa_e(double n, t_s s);
-char			*ft_itoa(int n);
-int				ft_print_e(double d, t_s s);
-t_s	ft_print_e1(t_s s);
-t_s	ft_print_e3(t_s s);
-t_s	ft_print_e4(t_s s);
-t_s	ft_print_e5(t_s s);
+void			reverse(char *str, int len);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 11:53:15 by gcollet           #+#    #+#             */
-/*   Updated: 2021/06/30 10:13:34 by gcollet          ###   ########.fr       */
+/*   Updated: 2021/07/06 14:28:13 by gcollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,22 @@ t_s	ft_check_length(t_s s)
 			s.h = 1;
 	}
 	return (s);
+}
+
+void	reverse(char *str, int len)
+{
+	int	i;
+	int	j;
+	int	temp;
+
+	i = 0;
+	j = len - 1;
+	while (i < j)
+	{
+		temp = str[i];
+		str[i] = str[j];
+		str[j] = temp;
+		i++;
+		j--;
+	}
 }
