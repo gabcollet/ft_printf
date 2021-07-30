@@ -6,7 +6,7 @@
 #    By: gcollet <gcollet@student.42quebec.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/11 12:58:26 by gcollet           #+#    #+#              #
-#    Updated: 2021/07/06 13:41:59 by gcollet          ###   ########.fr        #
+#    Updated: 2021/07/12 11:03:31 by gcollet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ OBJS_B	= ${SRCS_B:.c=.o}
 HEADER	= includes/
 
 CC 		= gcc
-CFLAGS 	= -Wall -Wextra -Werror
+CFLAGS 	= -g -Wall -Wextra -Werror
 
 .c.o:		%.o : %.c
 					${CC} ${CFLAGS} -I ${HEADER} -c $< -o $(<:.c=.o)
